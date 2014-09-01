@@ -9,6 +9,7 @@ var path = require('path');
 var MongoStore = require('connect-mongo')(express);
 var settings = require('./settings');
 var flash = require('connect-flash');
+var ejs = require('ejs');
 
 var fs = require('fs');
 var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
@@ -16,10 +17,15 @@ var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
 
 var app = express();
 
+
 // all environments
 app.set('port', process.env.PORT || 3000);
+
+app.engine('html', ejs.__express);
+
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+
 app.use(flash());
 app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
 app.use(express.logger('dev'));
